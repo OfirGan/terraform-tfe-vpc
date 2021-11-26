@@ -45,7 +45,7 @@ resource "tfe_notification_configuration" "slac_notification" {
 
 
 ##################################################################################
-# Env Variables
+# Workspace Environment Variables
 ##################################################################################
 
 resource "tfe_variable" "aws_access_key_id" {
@@ -70,7 +70,35 @@ resource "tfe_variable" "aws_default_region" {
   key          = "AWS_DEFAULT_REGION"
   value        = var.aws_default_region
   description  = "AWS Default Region"
-  workspace_id = tfe_workspace.vpc_workspace.id
+  workspace_id = resource.tfe_workspace.vpc_workspace.id
   category     = "env"
 }
 
+
+##################################################################################
+# Workspace Variables
+##################################################################################
+
+resource "tfe_variable" "vpc_cidr" {
+  key          = "vpc_cidr"
+  value        = var.vpc_cidr
+  description  = "VPC CIDR"
+  workspace_id = resource.tfe_workspace.vpc_workspace.id
+  category     = "terraform"
+}
+
+resource "tfe_variable" "availability_zones_count" {
+  key          = "availability_zones_count"
+  value        = var.availability_zones_count
+  description  = "AZ Count to create subnets in"
+  workspace_id = resource.tfe_workspace.vpc_workspace.id
+  category     = "terraform"
+}
+
+resource "tfe_variable" "purpose_tag" {
+  key          = "purpose_tag"
+  value        = var.purpose_tag
+  description  = "Purpose Tag Name"
+  workspace_id = resource.tfe_workspace.vpc_workspace.id
+  category     = "terraform"
+}
